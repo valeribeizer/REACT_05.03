@@ -62,8 +62,8 @@ class App extends Component {
       return <Profile {...this.state} />;
     } else {
       return (
-        <Form>
-          <div className="app">
+        <div className="app">
+          <Form>
             <Title name="Registration Form" />
             <Field
               state={this.state}
@@ -125,12 +125,12 @@ class App extends Component {
               name="description"
               placeholder="Your Last Project. Be short.."
             />
-          </div>
-          <div className="form-actions">
-            <Button buttonName="Submit" onClick={this.handleSubmit} />
-            <Button buttonName="Cancel" onClick={this.resetForm} />
-          </div>
-        </Form>
+            <div className="form-actions">
+              <Button buttonName="Submit" onClick={this.handleSubmit} />
+              <Button buttonName="Cancel" onClick={this.resetForm} />
+            </div>
+          </Form>
+        </div>
       );
     }
   }
