@@ -2,20 +2,17 @@
   display: inline-block;
   column-gap: 1rem;
   flex-wrap: wrap;
-}
-
-.control-group {
   min-width: 25rem;
   flex: 1;
 }
 
 .counter {
-    margin: 0;
-    color: darkgray;
+  margin: 0;
+  color: darkgray;
 }
 
 .invalid {
-    padding: 0;
-    margin: 0;
-    color: rgb(201, 47, 47);
+  padding: 0;
+  margin: 0;
+  color: rgb(201, 47, 47);
 }

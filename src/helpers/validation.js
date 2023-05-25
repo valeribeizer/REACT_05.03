@@ -1,148 +1,67 @@
-export function validation(state, setState) {
-  nameValidation.call({ state, setState });
-  surnameValidation.call({ state, setState });
-  dateOfBirthValidation.call({ state, setState });
-  phoneValidation.call({ state, setState });
-  webSiteValidation.call({ state, setState });
-  aboutValidation.call({ state, setState });
-  stackValidation.call({ state, setState });
-  descriptionValidation.call({ state, setState });
-  setState((prev) => {
-    if (Object.values(prev.errors).every((it) => !it)) {
-      return { displayProfile: true };
-    }
-  });
-}
-
 const emptyError = "The field cannot be empty";
 const firstLetterError = "Check first character. It must be capitalized";
 const phoneTextError = "At least 9 digits";
 const webSiteTextError = "Don't forget 'https://' in the beginning";
 
-function nameValidation() {
-  if (this.state.name.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        nameError: emptyError,
-      },
-    }));
-  } else if (this.state.name[0] !== this.state.name[0].toUpperCase()) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        nameError: firstLetterError,
-      },
-    }));
-  }
-}
+const nameValidation = (value) => {
+  const validation = new RegExp(/^[А-ЯA-Z]/);
+  return validation.test(value);
+};
 
-function surnameValidation() {
-  if (this.state.surname.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        surnameError: emptyError,
-      },
-    }));
-  } else if (this.state.surname[0] !== this.state.surname[0].toUpperCase()) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        surnameError: firstLetterError,
-      },
-    }));
-  }
-}
+const phoneValidation = (value) => {
+  const validation = new RegExp(/^\d{1}-\d{4}-\d{2}-\d{2}$/);
+  return validation.test(value) && value.length <= 12;
+};
 
-function dateOfBirthValidation() {
-  if (this.state.dateOfBirth.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        dateOfBirthError: emptyError,
-      },
-    }));
-  }
-}
+const webSiteValidation = (value) => {
+  const validation = new RegExp(/^https?:\/\//);
+  return validation.test(value);
+};
 
-function phoneValidation() {
-  if (this.state.phone.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        phoneError: emptyError,
-      },
-    }));
-  } else if (this.state.phone.length !== 12) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        phoneError: phoneTextError,
-      },
-    }));
-  }
-}
+export const validation = (inputs) => {
+  const errors = {};
+  for (const input in inputs) {
+    const value = inputs[input];
+    let error = "";
 
-function webSiteValidation() {
-  if (this.state.webSite.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        webSiteError: emptyError,
-      },
-    }));
-  } else if (!this.state.webSite.startsWith("https://")) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        webSiteError: webSiteTextError,
-      },
-    }));
+    switch (input) {
+      case "name":
+        if (value === "") {
+          error = emptyError;
+        } else if (!nameValidation(value)) {
+          error = firstLetterError;
+        }
+        break;
+      case "surname":
+        if (value === "") {
+          error = emptyError;
+        } else if (!nameValidation(value)) {
+          error = firstLetterError;
+        }
+        break;
+      case "phone":
+        if (value === "") {
+          error = emptyError;
+        } else if (!phoneValidation(value)) {
+          error = phoneTextError;
+        }
+        break;
+      case "webSite":
+        if (value === "") {
+          error = emptyError;
+        } else if (!webSiteValidation(value)) {
+          error = webSiteTextError;
+        }
+        break;
+      default:
+        if (value === "") {
+          error = emptyError;
+        }
+        break;
+    }
+    if (error !== "") {
+      errors[input] = error;
+    }
   }
-}
-
-function aboutValidation() {
-  if (this.state.about.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        aboutError: emptyError,
-      },
-    }));
-  }
-}
-
-function stackValidation() {
-  if (this.state.stack.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        stackError: emptyError,
-      },
-    }));
-  }
-}
-
-function descriptionValidation() {
-  if (this.state.description.length === 0) {
-    this.setState((prev) => ({
-      ...prev,
-      errors: {
-        ...prev.errors,
-        descriptionError: emptyError,
-      },
-    }));
-  }
-}
+  return errors;
+};
