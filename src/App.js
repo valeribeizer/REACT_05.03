@@ -1,27 +1,15 @@
-import "./css/main.css";
-import DisplayTodos from "./components/DisplayTodos";
-import Todos from "./components/Todos";
+import "./main.css";
+import Login from "./components/Login/Login";
+import { useSelector } from "react-redux";
+import { selectUser } from "./redux/userSlice";
+import Logout from "./components/Logout/Logout";
 
-import { motion } from "framer-motion";
 function App() {
+  const user = useSelector(selectUser);
+
   return (
     <div className="App">
-      <motion.h1
-        initial={{ y: -200 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", duration: 0.5 }}
-        whileHover={{ scale: 1.1 }}
-      >
-        Todo App
-      </motion.h1>
-      <motion.div
-        initial={{ y: 1000 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", duration: 1 }}
-      >
-        <Todos />
-        <DisplayTodos />
-      </motion.div>
+      {user ? <Logout /> : <Login />}
     </div>
   );
 }

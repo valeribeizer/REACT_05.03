@@ -2,21 +2,37 @@ import React, { useRef } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { IoCheckmarkDoneSharp, IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { completeTodos, removeTodos, updateTodos } from "../../redux/reducer";
+import { decrement } from "../../redux/counterSlice";
+import "./style.css";
 
 const TodoItem = (props) => {
-  const { item, updateTodo, removeTodo, completeTodo } = props;
+  const { item } = props;
   const inputRef = useRef(true);
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter);
 
   const changeFocus = () => {
-    inputRef.current.disabled = true;
+    inputRef.current.disabled = false;
     inputRef.current.focus();
   };
 
   const update = (id, value, e) => {
     if (e.which === 13) {
-      updateTodo({ id, item: value });
+      dispatch(updateTodos({ id, item: value }));
       inputRef.current.disabled = true;
     }
+  };
+
+  const complete = () => {
+    dispatch(completeTodos(item.id));
+    dispatch(decrement(counter));
+  };
+
+  const remove = () => {
+    dispatch(removeTodos(item.id));
+    dispatch(decrement(counter));
   };
 
   return (
@@ -55,7 +71,7 @@ const TodoItem = (props) => {
             whileHover={{ scale: 1.4 }}
             whileTap={{ scale: 0.9 }}
             style={{ color: "green" }}
-            onClick={() => completeTodo(item.id)}
+            onClick={() => complete()}
           >
             <IoCheckmarkDoneSharp />
           </motion.button>
@@ -64,7 +80,7 @@ const TodoItem = (props) => {
           whileHover={{ scale: 1.4 }}
           whileTap={{ scale: 0.9 }}
           style={{ color: "red" }}
-          onClick={() => removeTodo(item.id)}
+          onClick={() => remove()}
         >
           <IoClose />
         </motion.button>

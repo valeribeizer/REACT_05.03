@@ -1,8 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { reducer } from "./reducer";
+import todosReducer from "./reducer";
+import userReducer from "./userSlice";
+import counterReducer from './counterSlice';
 
-const store = configureStore({
-  reducer: reducer,
+export default configureStore({
+  reducer: {
+    user: userReducer,
+    todos: todosReducer,
+    counter: counterReducer
+  }
 });
 
-export default store;

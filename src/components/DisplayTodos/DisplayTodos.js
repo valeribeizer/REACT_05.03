@@ -1,19 +1,14 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import {
   addTodos,
   completeTodos,
   removeTodos,
   updateTodos,
-} from "../redux/reducer";
-import TodoItem from "./TodoItem";
+} from "../../redux/reducer";
+import TodoItem from "../TodoItem/TodoItem";
 import { AnimatePresence, motion } from "framer-motion";
-
-const mapStateToProps = (state) => {
-  return {
-    todos: state,
-  };
-};
+import "./style.css";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -26,6 +21,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const DisplayTodos = (props) => {
   const [sort, setSort] = useState("active");
+  const todos = useSelector((state) => state.todos);
+
   return (
     <div className="displaytodos">
       <div className="buttons">
@@ -53,8 +50,8 @@ const DisplayTodos = (props) => {
       </div>
       <ul>
         <AnimatePresence>
-          {props.todos.length > 0 && sort === "active"
-            ? props.todos.map((item) => {
+          {todos.length > 0 && sort === "active"
+            ? todos.map((item) => {
                 return (
                   item.completed === false && (
                     <TodoItem
@@ -68,8 +65,8 @@ const DisplayTodos = (props) => {
                 );
               })
             : null}
-          {props.todos.length > 0 && sort === "completed"
-            ? props.todos.map((item) => {
+          {todos.length > 0 && sort === "completed"
+            ? todos.map((item) => {
                 return (
                   item.completed === true && (
                     <TodoItem
@@ -83,8 +80,8 @@ const DisplayTodos = (props) => {
                 );
               })
             : null}
-          {props.todos.length > 0 && sort === "all"
-            ? props.todos.map((item) => {
+          {todos.length > 0 && sort === "all"
+            ? todos.map((item) => {
                 return (
                   <TodoItem
                     key={item.id}
@@ -102,4 +99,4 @@ const DisplayTodos = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DisplayTodos);
+export default connect(mapDispatchToProps)(DisplayTodos);

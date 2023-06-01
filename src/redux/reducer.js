@@ -8,6 +8,7 @@ const addTodoReducer = createSlice({
   reducers: {
     addTodos: (state, action) => {
       state.push(action.payload);
+      
       return state;
     },
     removeTodos: (state, action) => {
@@ -40,4 +41,4 @@ const addTodoReducer = createSlice({
 
 export const { addTodos, removeTodos, updateTodos, completeTodos } =
   addTodoReducer.actions;
-export const reducer = addTodoReducer.reducer;
+export default addTodoReducer.reducer;

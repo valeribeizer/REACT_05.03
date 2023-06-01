@@ -1,34 +1,28 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { addTodos } from "../redux/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { increment } from "../../redux/counterSlice";
+import { addTodos } from "../../redux/reducer";
 import { GoPlus } from "react-icons/go";
 import { motion } from "framer-motion";
+import  './style.css';
 
-const mapStateToProps = (state) => {
-  return {
-    todos: state,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTodo: (obj) => dispatch(addTodos(obj)),
-  };
-};
-
-const Todos = (props) => {
-  console.log("props", props);
+const Todos = () => {
   const [todo, setTodo] = useState("");
+  const counter = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
 
   const add = () => {
     if (todo === "") {
       alert("Input cannot be empty!");
     } else {
-      props.addTodo({
-        id: Math.floor(Math.random() * 1000),
-        item: todo,
-        completed: false,
-      });
+      dispatch(
+        addTodos({
+          id: Math.floor(Math.random() * 1000),
+          item: todo,
+          completed: false,
+        })
+      );
+      dispatch(increment(counter));
       setTodo("");
     }
   };
@@ -58,4 +52,4 @@ const Todos = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Todos);
+export default Todos;
